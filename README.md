@@ -2,12 +2,17 @@
 
 ```
 furoc 
--I ./pathTto/spec/project
+-I ./node_modules/pathTto/spec/project
+--plugin furoc-gen-u33e
 --u33e_out=\
-this_string_is_for_the_plugin,\
+Sreference-search,\
+Tform,\
+Scollection-dropdown,\
+:outputBaseDirectoryForU33e
+```
 
-:outputBaseDirectory
-
+```
+furoc  //looks for .furoc (yaml)
 ```
 
 --u33e_out= ==> furoc-gen-u33e binary
