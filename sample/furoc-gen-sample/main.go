@@ -1,25 +1,23 @@
 package main
 
 import (
-	"encoding/gob"
 	furoc "github.com/theNorstroem/furoc/pkg/response"
-	"os"
 )
 
 func main() {
 
-	res := furoc.Response{Files: []furoc.TargetFile{}}
+	res := furoc.NewResponser()
 
 	// sample file
 	readme := furoc.TargetFile{
 		Filename: "/readme.md",
-		Content:  []byte("#Test"),
+		Content:  []byte("#Test response"),
 	}
+
 	// build a sample response
-	res.Files = append(res.Files, readme)
+	res.AddFile(readme)
+	res.AddFile(readme)
+	res.AddFile(readme)
 
-	// encode and send the response
-	encoder := gob.NewEncoder(os.Stdout)
-	encoder.Encode(res)
-
+	res.SendResponse()
 }
