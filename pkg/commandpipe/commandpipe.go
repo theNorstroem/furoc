@@ -3,6 +3,7 @@ package commandpipe
 import (
 	"bufio"
 	"bytes"
+
 	"io"
 	"log"
 	"os"
@@ -10,15 +11,14 @@ import (
 )
 
 type Command struct {
-	process     *exec.Cmd
-	Buffer      bytes.Buffer
-	writer      *bufio.Writer
-	commandName string // command name
-	stdin       io.WriteCloser
+	Buffer  bytes.Buffer
+	process *exec.Cmd
+	writer  *bufio.Writer
+	stdin   io.WriteCloser
 }
 
-func NewCommand(command string, args ...string) Command {
-	c := Command{
+func NewCommand(command string, args ...string) *Command {
+	c := &Command{
 		process: exec.Command(command, args...),
 	}
 	var err error
@@ -27,25 +27,29 @@ func NewCommand(command string, args ...string) Command {
 		log.Fatal(command, err)
 	}
 
-	c.commandName = command
-
 	c.process.Stdout = &c.Buffer
 	c.process.Stderr = os.Stderr
 
 	c.writer = bufio.NewWriter(c.stdin)
-
 	return c
 }
 
-func (c Command) WriteToStdin(data []byte) (bytes.Buffer, error) {
+// write data to stdin of process
+func (c *Command) WriteToStdin(data []byte) ([]byte, error) {
 
 	if err := c.process.Start(); err != nil { //Use start, not run
-		return bytes.Buffer{}, err
+		return nil, err
 	}
 
-	c.writer.Write(data)
-
+	_, err := c.writer.Write(data)
+	if err != nil {
+		return nil, err
+	}
 	c.stdin.Close()
-	c.process.Wait()
-	return c.Buffer, nil
+	err = c.process.Wait()
+	if err != nil {
+		return nil, err
+	}
+	// return the response
+	return c.Buffer.Bytes(), nil
 }
