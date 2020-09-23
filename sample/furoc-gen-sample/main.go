@@ -1,25 +1,35 @@
 package main
 
 import (
+	"github.com/ghodss/yaml"
 	furoc "github.com/theNorstroem/furoc/pkg/reqres"
+	"log"
 )
 
 func main() {
 	req := furoc.NewRequester()
-	req.Fprintln(req.Parameters)
-
 	res := furoc.NewResponser()
 
-	// sample file
-	readme := furoc.TargetFile{
-		Filename: "/readme.md",
-		Content:  []byte("#Test reqres"),
-	}
+	req.Fprintln("Start")
 
-	// build a sample reqres
-	res.AddFile(readme)
-	res.AddFile(readme)
-	res.AddFile(readme)
+	// for convinience
+	ast := req.AST
+
+	for name, s := range ast.Services {
+		req.Fprintln(name)
+		c, err := yaml.Marshal(s.ServiceSpec)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// sample file
+		readme := furoc.TargetFile{
+			Filename: "/" + s.ServiceSpec.Name + ".md",
+			Content:  c,
+		}
+
+		// build a sample reqres
+		res.AddFile(readme)
+	}
 
 	res.SendResponse()
 }

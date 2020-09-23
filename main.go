@@ -24,6 +24,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(files)
+	fmt.Println(files.Files[0])
 
 }

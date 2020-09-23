@@ -2,6 +2,8 @@ package reqres
 
 import (
 	"fmt"
+	"github.com/theNorstroem/spectools/pkg/ast/serviceAst"
+	"github.com/theNorstroem/spectools/pkg/ast/typeAst"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
@@ -9,10 +11,18 @@ import (
 	"strings"
 )
 
+type AST struct {
+	Config            map[string]interface{} // contains the config of the spec project, this can be relevant
+	InstalledServices map[string]*serviceAst.ServiceAst
+	InstalledTypes    map[string]*typeAst.TypeAst
+	Services          map[string]*serviceAst.ServiceAst
+	Types             map[string]*typeAst.TypeAst
+}
+
 type Request struct {
 	Parameters   []string
 	ParameterMap map[string]string
-	AST          map[string]interface{}
+	AST          AST
 }
 
 // print what you want to the stderr console and not to the reqres
