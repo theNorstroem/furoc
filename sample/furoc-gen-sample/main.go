@@ -28,7 +28,7 @@ func main() {
 		}
 
 		// build a sample reqres
-		res.AddFile(readme)
+		res.AddFile(&readme)
 	}
 
 	res.SendResponse()

@@ -13,14 +13,14 @@ type TargetFile struct {
 }
 
 type Response struct {
-	Files []TargetFile
+	Files []*TargetFile
 }
 
 func NewResponser() *Response {
-	return &Response{Files: []TargetFile{}}
+	return &Response{Files: []*TargetFile{}}
 }
 
-func (r *Response) AddFile(file TargetFile) {
+func (r *Response) AddFile(file *TargetFile) {
 	r.Files = append(r.Files, file)
 }
 

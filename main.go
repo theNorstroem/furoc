@@ -28,16 +28,19 @@ func main() {
 		log.Fatal(err)
 	}
 
-	files := &reqres.Response{}
+	responses := &reqres.Response{}
 	for _, cmd := range arglist.Commands {
 		f, err := subcommand.ExecuteSubcommand(cmd.Plugin, specYaml, cmd.Args)
 		if err != nil {
 			log.Fatal(err)
 		}
-		files = f
+		// collect files
+		for _, nf := range f.Files {
+			responses.Files = append(responses.Files, nf)
+		}
 	}
 
-	files = files
-	fmt.Println(len(files.Files))
+	// all files are in responses.Files
+	fmt.Println(len(responses.Files))
 
 }
