@@ -11,10 +11,13 @@ import (
 )
 
 func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *reqres.Response, err error) {
+	if command == "" {
+		log.Fatal("plugin not defined")
+	}
 	subProcess := exec.Command(command, params...)
 	stdin, err := subProcess.StdinPipe()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(command, err)
 	}
 
 	var b bytes.Buffer

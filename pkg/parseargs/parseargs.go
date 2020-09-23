@@ -52,12 +52,12 @@ func Parse() Arglist {
 	// command options
 	// can be like this
 	// --u33e_out= \
-	// Sreference-search,\
+	// Sreference-search,   \
 	// Scollection-dropdown,\
 	//:outputBaseDirectoryForU33e
 	//
 	// Or
-	// --u33e_out=Sreference-search,Scollection-dropdown:outputBaseDirectoryForU33e
+	// --u33e_out=Sreference-search, Scollection-dropdown :outputBaseDirectoryForU33e
 	argline := strings.Join(os.Args, " ")
 	var regex = regexp.MustCompile(`--([^=]*)_out=([^:]*):([^\s]*)`)
 	matches := regex.FindAllStringSubmatch(argline, -1)

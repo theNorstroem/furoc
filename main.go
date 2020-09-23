@@ -18,6 +18,13 @@ func main() {
 	if len(os.Args) == 1 {
 		// look for a .spectools config in cwd
 		// if we are in a spec project and have furoc instructions there, follow them
+		if !util.FileExists(".spectools") {
+			log.Fatal("you must be in a spec project directory when no arguments are given")
+		} else {
+			// read config
+			arglist = parseargs.FromSpecToolsConfig()
+		}
+
 	} else {
 		// parse furoc command arguments
 		arglist = parseargs.Parse()
