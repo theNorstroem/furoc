@@ -6,9 +6,12 @@ import (
 	"github.com/theNorstroem/furoc/internal/subcommand"
 	"github.com/theNorstroem/furoc/pkg/parseargs"
 	"github.com/theNorstroem/furoc/pkg/reqres"
+	"github.com/theNorstroem/spectools/pkg/util"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
+	"path"
 )
 
 func main() {
@@ -28,19 +31,49 @@ func main() {
 		log.Fatal(err)
 	}
 
-	responses := &reqres.Response{}
+	type CMDResponse struct {
+		response      *reqres.Response
+		baseTargetDir string
+	}
+	allResponses := []CMDResponse{}
+	//  for duplicate file check
+	fullFilelist := map[string]bool{}
+
 	for _, cmd := range arglist.Commands {
-		f, err := subcommand.ExecuteSubcommand(cmd.Plugin, specYaml, cmd.Args)
+		r, err := subcommand.ExecuteSubcommand(cmd.Plugin, specYaml, cmd.Args)
 		if err != nil {
 			log.Fatal(err)
 		}
-		// collect files
-		for _, nf := range f.Files {
-			responses.Files = append(responses.Files, nf)
+		allResponses = append(allResponses, CMDResponse{
+			response:      r,
+			baseTargetDir: cmd.OutputDir,
+		})
+		// check for duplicate files
+		for _, f := range r.Files {
+			fname := cmd.OutputDir + "/" + f.Filename
+			_, alreadyRagistred := fullFilelist[fname]
+			if alreadyRagistred {
+				log.Fatal(fname, " try to write same file twice")
+			} else {
+				fullFilelist[fname] = true
+			}
 		}
 	}
 
-	// all files are in responses.Files
-	fmt.Println(len(responses.Files))
+	// Writer:
+
+	for _, responseSet := range allResponses {
+		for _, file := range responseSet.response.Files {
+			if util.DirExists(responseSet.baseTargetDir) {
+				fname := path.Join(responseSet.baseTargetDir, file.Filename)
+				util.MkdirRelative(path.Dir(fname))
+				ioutil.WriteFile(fname, file.Content, 0644)
+				fmt.Println(fname)
+			} else {
+				log.Fatal("Dir does not exist: ", responseSet.baseTargetDir)
+			}
+
+		}
+	}
 
 }

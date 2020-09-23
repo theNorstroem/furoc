@@ -23,7 +23,7 @@ func main() {
 		}
 		// sample file
 		readme := furoc.TargetFile{
-			Filename: "/" + s.ServiceSpec.Name + ".md",
+			Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md",
 			Content:  c,
 		}
 
