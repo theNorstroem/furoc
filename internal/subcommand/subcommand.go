@@ -16,6 +16,7 @@ func ExecuteSubcommand(command string, specYaml []byte, params []string) (files 
 	}
 	subProcess := exec.Command(command, params...)
 	stdin, err := subProcess.StdinPipe()
+	writer := bufio.NewWriter(stdin)
 	if err != nil {
 		log.Fatal(command, err)
 	}
@@ -30,7 +31,6 @@ func ExecuteSubcommand(command string, specYaml []byte, params []string) (files 
 		log.Fatal(command, err)
 	}
 
-	writer := bufio.NewWriter(stdin)
 	writer.Write(specYaml)
 
 	stdin.Close()
