@@ -35,7 +35,7 @@ func Parse() Arglist {
 	// triage for the commands
 	for _, arg := range os.Args[1:] {
 		if strings.HasPrefix(arg, "-I") {
-			a.Inputs = append(a.Inputs, arg[3:])
+			a.Inputs = append(a.Inputs, arg[2:])
 		}
 		// plugins
 		if strings.HasPrefix(arg, "--plugin") {

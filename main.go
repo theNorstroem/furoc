@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/theNorstroem/furoc/internal/input"
 	"github.com/theNorstroem/furoc/internal/subcommand"
 	"github.com/theNorstroem/furoc/pkg/parseargs"
@@ -24,7 +23,11 @@ func main() {
 		arglist = parseargs.Parse()
 	}
 
-	specDir := "/Users/veith/Projects/tests/spectest"
+	if len(arglist.Inputs) == 0 {
+		log.Fatal("No input given.")
+	}
+
+	specDir := arglist.Inputs[0]
 	err, specYaml := input.GetInputYaml(specDir,
 		exec.Command("/Users/veith/Projects/golang/bin/spectools", "exportAsYaml", "-f"))
 	if err != nil {
@@ -68,7 +71,6 @@ func main() {
 				fname := path.Join(responseSet.baseTargetDir, file.Filename)
 				util.MkdirRelative(path.Dir(fname))
 				ioutil.WriteFile(fname, file.Content, 0644)
-				fmt.Println(fname)
 			} else {
 				log.Fatal("Dir does not exist: ", responseSet.baseTargetDir)
 			}

@@ -10,13 +10,13 @@ func main() {
 	req := furoc.NewRequester()
 	res := furoc.NewResponser()
 
-	req.Fprintln("Start")
+	//req.Fprintln("Start")
 
 	// for convinience
 	ast := req.AST
 
 	for name, s := range ast.Services {
-		req.Fprintln(name)
+		//req.Fprintln(name)
 		c, err := yaml.Marshal(s.ServiceSpec)
 		if err != nil {
 			log.Fatal(err)
