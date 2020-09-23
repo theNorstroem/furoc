@@ -17,8 +17,9 @@ func main() {
 	}
 
 	//subProcess := exec.Command("simple-generator", "-t=test.tpl")
-	subProcess := exec.Command("./furoc-gen-sample")
-	files, err := subcommand.ExecuteSubcommand(subProcess, specYaml)
+	commandParams := []string{"-t=test.tpl", "other"}
+
+	files, err := subcommand.ExecuteSubcommand("./sample/furoc-gen-sample/furoc-gen-sample", specYaml, commandParams)
 	if err != nil {
 		log.Fatal(err)
 	}

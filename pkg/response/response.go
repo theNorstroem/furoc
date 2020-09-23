@@ -1,5 +1,7 @@
 package response
 
+// use this to make a response for furoc
+
 import (
 	"encoding/gob"
 	"os"

@@ -11,7 +11,8 @@ import (
 	"os/exec"
 )
 
-func ExecuteSubcommand(subProcess *exec.Cmd, specYaml []byte) (files *response.Response, err error) {
+func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *response.Response, err error) {
+	subProcess := exec.Command(command, params...)
 	stdin, err := subProcess.StdinPipe()
 	if err != nil {
 		log.Fatal(err)
