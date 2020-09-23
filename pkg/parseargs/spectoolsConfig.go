@@ -28,7 +28,10 @@ func FromSpecToolsConfig() Arglist {
 
 	a := config.Build.Furoc
 
-	a.Inputs = append(a.Inputs, "./")
+	if len(a.Inputs) == 0 {
+		a.Inputs = append(a.Inputs, "./")
+	}
+
 	a.Binary = os.Args[0]
 
 	return a
