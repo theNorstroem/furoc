@@ -133,7 +133,7 @@ installedServices:
                             type: string
                         filter:
                             constraints: {}
-                            description: The response message will be filtered by the fields before being sent back to the client, filter=[['id','eq','1']]
+                            description: The reqres message will be filtered by the fields before being sent back to the client, filter=[['id','eq','1']]
                             meta:
                                 default: ""
                                 hint: ""
@@ -157,7 +157,7 @@ installedServices:
                             type: string
                         view:
                             constraints: {}
-                            description: allows the client to specify which view of the resource it wants to receive in the response. view=BASIC
+                            description: allows the client to specify which view of the resource it wants to receive in the reqres. view=BASIC
                             meta:
                                 default: ""
                                 hint: Should be a enum type. MUST be named view
@@ -892,7 +892,7 @@ installedTypes:
                     constraints: {}
                 meta:
                     type: furo.Meta
-                    description: Meta for the response
+                    description: Meta for the reqres
                     __proto:
                         number: 4
                         oneof: ""
@@ -4336,7 +4336,7 @@ installedTypes:
             fields:
                 meta:
                     type: furo.Meta
-                    description: Meta for the response
+                    description: Meta for the reqres
                     __proto:
                         number: 2
                         oneof: ""
@@ -4417,7 +4417,7 @@ installedTypes:
                     constraints: {}
                 meta:
                     type: furo.Meta
-                    description: Meta for the response
+                    description: Meta for the reqres
                     __proto:
                         number: 3
                         oneof: ""
@@ -5467,7 +5467,7 @@ types:
                     constraints: {}
                 meta:
                     type: furo.Meta
-                    description: Meta for the response
+                    description: Meta for the reqres
                     __proto:
                         number: 3
                         oneof: ""
@@ -5534,7 +5534,7 @@ types:
                     constraints: {}
                 meta:
                     type: furo.Meta
-                    description: Meta for the response
+                    description: Meta for the reqres
                     __proto:
                         number: 3
                         oneof: ""

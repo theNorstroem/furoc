@@ -1,6 +1,6 @@
-package response
+package reqres
 
-// use this to make a response for furoc
+// use this to make a reqres for furoc
 
 import (
 	"encoding/gob"
@@ -25,7 +25,7 @@ func (r *Response) AddFile(file TargetFile) {
 }
 
 func (r *Response) SendResponse() {
-	// encode and send the response
+	// encode and send the reqres
 	encoder := gob.NewEncoder(os.Stdout)
 	encoder.Encode(r)
 }

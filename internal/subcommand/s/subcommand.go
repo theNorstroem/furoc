@@ -3,13 +3,13 @@ package subcommand
 import (
 	"bufio"
 	"fmt"
-	"github.com/theNorstroem/furoc/pkg/response"
+	"github.com/theNorstroem/furoc/pkg/reqres"
 	"log"
 	"os"
 	"os/exec"
 )
 
-func ExecuteSubcommand(subProcess *exec.Cmd, specYaml []byte) (files response.Response, err error) {
+func ExecuteSubcommand(subProcess *exec.Cmd, specYaml []byte) (files reqres.Response, err error) {
 	stdin, err := subProcess.StdinPipe()
 	if err != nil {
 		log.Fatal(err)
@@ -31,5 +31,5 @@ func ExecuteSubcommand(subProcess *exec.Cmd, specYaml []byte) (files response.Re
 	stdin.Close()
 	subProcess.Wait()
 	fmt.Println("END") //for debug
-	return response.Response{}, nil
+	return reqres.Response{}, nil
 }

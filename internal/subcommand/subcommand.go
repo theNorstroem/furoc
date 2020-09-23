@@ -5,13 +5,13 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"github.com/theNorstroem/furoc/pkg/response"
+	"github.com/theNorstroem/furoc/pkg/reqres"
 	"log"
 	"os"
 	"os/exec"
 )
 
-func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *response.Response, err error) {
+func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *reqres.Response, err error) {
 	subProcess := exec.Command(command, params...)
 	stdin, err := subProcess.StdinPipe()
 	if err != nil {
@@ -36,7 +36,7 @@ func ExecuteSubcommand(command string, specYaml []byte, params []string) (files 
 	stdin.Close()
 	subProcess.Wait()
 
-	var r = response.Response{}
+	var r = reqres.Response{}
 	err = gobDecoder.Decode(&r)
 	if err != nil {
 		log.Fatal(err)
