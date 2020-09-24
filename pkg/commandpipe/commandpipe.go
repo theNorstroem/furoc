@@ -1,5 +1,7 @@
 package commandpipe
 
+// use this to easily call external programms and pass data to the stdin of them
+
 import (
 	"bufio"
 	"bytes"
@@ -34,7 +36,18 @@ func NewCommand(command string, args ...string) *Command {
 	return c
 }
 
-// write data to stdin of process
+// run the process without using stdin and receive the response
+func (c *Command) Execute() ([]byte, error) {
+
+	if err := c.process.Run(); err != nil { //Use start, not run
+		return nil, err
+	}
+
+	// return the response
+	return c.Buffer.Bytes(), nil
+}
+
+// write data to stdin of process and receive the response
 func (c *Command) WriteToStdin(data []byte) ([]byte, error) {
 
 	if err := c.process.Start(); err != nil { //Use start, not run
