@@ -31,7 +31,9 @@ func (Request) Fprintln(i ...interface{}) {
 }
 
 // Does all the input handling, and marshalling for you
-// to enable debuging add arguments the  "debug debugfile=./sample/fullyaml.yaml"
+//
+// To enable debuging add arguments the  "debug debugfile=./sample/fullyaml.yaml"
+// To create a debug file use "debugfileout=./sample/fullyaml.yaml"
 func NewRequester() Request {
 	req := Request{}
 	req.Parameters = os.Args
@@ -63,6 +65,10 @@ func NewRequester() Request {
 		}
 	} else {
 		data, err = ioutil.ReadAll(os.Stdin)
+		// write debugfile
+		if f, ok := req.ParameterMap["debugfileout"]; ok {
+			ioutil.WriteFile(f, data, 0644)
+		}
 
 		if err != nil {
 			log.Fatal(err)
