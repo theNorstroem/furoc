@@ -3,7 +3,7 @@
 The `furoc` "compiler" is a generator tool similar to `protoc`.
 
 ### When furoc and when protoc?
-- The furo specs can translate to *.proto and vice versa. When you already have protoc plugins, use them.
+- The furo specs can [translate to *.proto](https://github.com/theNorstroem/spectools/blob/master/doc/spectools_genMessageProtos.md) and [vice versa](https://github.com/theNorstroem/protoc-gen-furo-specs). When you already have protoc plugins, use them.
 - The furo specs have a much higher information density then the proto specs have. For generating ui components with furoc-gen-u33e, proto is not enough.
 - Furoc does not stop on an incomplete import chain. If you need this, use protoc before furoc.
 - Using furoc and protoc in combination gives you a lot of advantages, furoc plugins are easier to write,...
