@@ -1,29 +1,77 @@
 # furoc
 
-```
+The `furoc` "compiler" is a generator tool similar to `protoc`.
+
+## Usage
+You can configure the arguments in your .spectools file or give the arguments in the cli.
+
+#### running with command arguments:
+As soon you pass a Sxxx or Fxxx argument, only these will be built. To generate everything, do not pass a Sxxx or Txxx argument. 
+
+This command will generate **only** service:`reference-search`, type:`form`  and service:`collection-dropdown` components
+
+```shell script
 furoc 
--I./node_modules/pathTto/spec/project
+-I./pathTto/spec/project
 --plugin=furoc-gen-u33e
 --u33e_out=
 Sreference-search,\
 Tform,\
 Scollection-dropdown,\
-:outputBaseDirectoryForU33e
+:outputDirectoryForGenU33e
 ```
 
-```
-furoc  //looks for .spectools in cwd
+#### running with config:
+Same rules from "as command" are applied.
 
-# Add a furoc section to your .spectools config
+```shell script
+# just run furoc in the directory of your spec project 
+furoc
+```
+
+**Example:**
+
+```yaml
 build:
   furoc:
     Input:
         - ./
     Commands:
-      - OutputDir: dist/furoctest
-        Plugin: furoc-gen-sample
+      - OutputDir: dist/u33e
+        Plugin: furoc-gen-u33e
         Args:
-            - coldrun
+            - Sreference-search
+            - Tform
+            - Scollection-dropdown
 ```
 
---u33e_out= ==> furoc-gen-u33e binary
+
+
+
+## Command arguments
+
+### `-I./path`
+Defines the spec projects to include. At the moment only one spec project include is supported.
+
+### `--plugin=./path/to/bin/furoc-gen-pluginname`
+Defines the binary to use. If you do not use this option, the binary in `$PATH` will be used. 
+
+### `--pluginname_out=arg1,arg2,argN:ouputdir`
+Defines which plugins furoc should use.
+
+- `pluginname_out` will translate to furo-gen-pluginname
+- `arg1,arg2,argN` will be passed as arguments for the plugin. Read on the documentation of the plugin which arguments are valid.
+- `:outputdir` the generated files from the plugin will written to this directory
+
+## Writing your own plugins
+It is not so dificult to write a plugin for furoc. Look at the sample `furoc-gen-sample` or look at other plugins.
+
+### Interface
+Furoc will pass a yaml with the current config of the spec project, the types, the services, the installed types and the installed services.
+As an example input for your plugin, look at sample/fullyaml.yaml.
+
+The list will go to `stdin` of your plugin.
+
+Furoc exects a list of files as response. The response goes to `stdout` of your plugin.
+
+You can use the package **reqres** which handles all the stdin stdout encoding decoding stuff for you.  
