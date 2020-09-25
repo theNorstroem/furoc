@@ -2,6 +2,12 @@
 
 The `furoc` "compiler" is a generator tool similar to `protoc`.
 
+### When furoc and when protoc?
+- The furo specs can translate to *.proto and vice versa. When you already have protoc plugins, use them.
+- The furo specs have a much higher information density then the proto specs have. For generating ui components with furoc-gen-u33e, proto is not enough.
+- Furoc does not stop on an incomplete import chain. If you need this, use protoc before furoc.
+- Using furoc and protoc in combination gives you a lot of advantages, furoc plugins are easier to write,...
+
 ## Usage
 You can configure the arguments in your .spectools file or give the arguments in the cli.
 
@@ -75,3 +81,6 @@ The list will go to `stdin` of your plugin.
 Furoc exects a list of files as response. The response goes to `stdout` of your plugin.
 
 You can use the package **reqres** which handles all the stdin stdout encoding decoding stuff for you.  
+
+### Furoc plugins in other languages
+At the moment, only serialized go structs are accepted as response. A variant which accepts proto (with the same interface protoc excepts the responses) will come if requested. 
