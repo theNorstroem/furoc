@@ -1,7 +1,16 @@
 package commandpipe
 
 // use this to easily call external programms and pass data to the stdin of them
-
+//
+// usage without stdin:
+//    cmdLs := commandpipe.NewCommand("ls","-al")
+//    content,err := cmdLs.Execute()
+//
+// usage with stdin:
+//    cmdSimpleGenerator := commandpipe.NewCommand("simple-generator","-t=test.tpl")
+//    d, err := cmdSimpleGenerator.WriteToStdin(c)
+//
+// Keep in mind that a command can only be used once. You have to create it again and again if you want to use it in a loop.
 import (
 	"bufio"
 	"bytes"

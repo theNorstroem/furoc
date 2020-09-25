@@ -29,6 +29,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		// if your plugin needs to call another executable, you can use
+		// commandpipe.NewCommand()
+
 		// create sample file
 		readme := furoc.TargetFile{
 			Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md",
