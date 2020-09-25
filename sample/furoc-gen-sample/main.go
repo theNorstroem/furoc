@@ -25,6 +25,20 @@ func main() {
 
 	for name, s := range ast.Services {
 
+		// Using your own extension
+		// when you have the custom extension "sampleExtension" in the service spec
+		//
+		//         extensions:
+		//            sampleExtension:
+		//                generate: sample
+		// you can decode its content with furoc.DecodeExtension
+		specextension := &MyServiceSpecExtension{}
+		furoc.DecodeExtension(s.ServiceSpec.Extensions, "sampleExtension", specextension)
+
+		if specextension.generate {
+			// do something
+		}
+
 		// build your file
 		fileContent, err := yaml.Marshal(s.ServiceSpec)
 		if err != nil {
@@ -45,4 +59,8 @@ func main() {
 
 	// send the response back to furoc
 	res.SendResponse()
+}
+
+type MyServiceSpecExtension struct {
+	generate bool `yaml:"generate"`
 }
