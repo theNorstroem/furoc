@@ -36,7 +36,7 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/subosito/gotenv v1.2.0
 github.com/subosito/gotenv
-# github.com/theNorstroem/spectools v1.9.4
+# github.com/theNorstroem/spectools v1.10.0
 ## explicit
 github.com/theNorstroem/spectools/pkg/ast/serviceAst
 github.com/theNorstroem/spectools/pkg/ast/typeAst
