@@ -25,18 +25,18 @@ func main() {
 
 	for name, s := range ast.Services {
 
-		c, err := yaml.Marshal(s.ServiceSpec)
+		// build your file
+		fileContent, err := yaml.Marshal(s.ServiceSpec)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// if your plugin needs to call another executable, you can use
-		// commandpipe.NewCommand()
+		// if your plugin needs to call another executable, you can use commandpipe.NewCommand()
 
 		// create sample file
 		readme := furoc.TargetFile{
-			Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md",
-			Content:  c,
+			Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md", // full qualified filename which will generated in :outputdir/
+			Content:  fileContent,                                   //[]byte with content
 		}
 
 		// Add file to the responder
