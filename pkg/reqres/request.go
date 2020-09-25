@@ -30,6 +30,7 @@ func (Request) Fprintln(i ...interface{}) {
 	fmt.Fprintln(os.Stderr, i...)
 }
 
+// Does all the input handling, and marshalling for you
 // to enable debuging add arguments the  "debug debugfile=./sample/fullyaml.yaml"
 func NewRequester() Request {
 	req := Request{}
