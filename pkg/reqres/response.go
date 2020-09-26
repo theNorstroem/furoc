@@ -4,7 +4,11 @@ package reqres
 
 import (
 	"encoding/gob"
+	"github.com/theNorstroem/spectools/pkg/util"
+	"io/ioutil"
+	"log"
 	"os"
+	"path"
 )
 
 type TargetFile struct {
@@ -14,6 +18,7 @@ type TargetFile struct {
 
 type Response struct {
 	Files []*TargetFile
+	debug bool
 }
 
 // Creates a responser which holds the files you want to send back to protoc.
@@ -28,7 +33,22 @@ func (r *Response) AddFile(file *TargetFile) {
 
 // Send the encoded message response back to furoc
 func (r *Response) SendResponse() {
-	// encode and send the reqres
-	encoder := gob.NewEncoder(os.Stdout)
-	encoder.Encode(r)
+	if r.debug {
+		// do the writes directly when debuging is enabled
+		for _, file := range r.Files {
+			if util.DirExists("debug_out") {
+				fname := path.Join("debug_out", file.Filename)
+				util.MkdirRelative(path.Dir(fname))
+				ioutil.WriteFile(fname, file.Content, 0644)
+			} else {
+				log.Fatal("Dir does not exist: ", "debug_out")
+			}
+
+		}
+	} else {
+
+		// encode and send the reqres
+		encoder := gob.NewEncoder(os.Stdout)
+		encoder.Encode(r)
+	}
 }

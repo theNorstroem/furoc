@@ -12,11 +12,14 @@ import (
 )
 
 type AST struct {
-	Config            map[string]interface{} // contains the config of the spec project, this can be relevant
-	InstalledServices map[string]*serviceAst.ServiceAst
-	InstalledTypes    map[string]*typeAst.TypeAst
-	Services          map[string]*serviceAst.ServiceAst
-	Types             map[string]*typeAst.TypeAst
+	Config            map[string]interface{}            `yaml:"config"` // contains the config of the spec project, this can be relevant
+	InstalledServices map[string]*serviceAst.ServiceAst `yaml:"installedServices"`
+	InstalledTypes    map[string]*typeAst.TypeAst       `yaml:"installedTypes"`
+	Services          map[string]*serviceAst.ServiceAst `yaml:"services"`
+	Types             map[string]*typeAst.TypeAst       `yaml:"types"`
+	AllTypes          map[string]*typeAst.TypeAst       // build this after receiving
+	AllServices       map[string]*serviceAst.ServiceAst // build this after receiving
+
 }
 
 type Request struct {
@@ -34,8 +37,8 @@ func (Request) Fprintln(i ...interface{}) {
 //
 // To enable debuging add arguments the  "debug debugfile=./sample/fullyaml.yaml"
 // To create a debug file use "debugfileout=./sample/fullyaml.yaml"
-func NewRequester() Request {
-	req := Request{}
+func NewRequester() (*Request, *Response) {
+	req := &Request{}
 	req.Parameters = os.Args
 	req.ParameterMap = map[string]string{}
 	// make a param map for easy access
@@ -55,6 +58,7 @@ func NewRequester() Request {
 	// call it with your-cmd debug debugfile=path/to/debuginput
 	if _, debug := req.ParameterMap["debug"]; debug {
 		var debugFile string
+
 		if f, ok := req.ParameterMap["debugfile"]; ok {
 			debugFile = f
 		}
@@ -80,5 +84,24 @@ func NewRequester() Request {
 		log.Fatal(err)
 	}
 
-	return req
+	// build allTypes
+	req.AST.AllTypes = map[string]*typeAst.TypeAst{}
+	for n, t := range req.AST.Types {
+		req.AST.AllTypes[n] = t
+	}
+	for n, t := range req.AST.InstalledTypes {
+		req.AST.AllTypes[n] = t
+	}
+	// build allServices
+	req.AST.AllServices = map[string]*serviceAst.ServiceAst{}
+	for n, t := range req.AST.Services {
+		req.AST.AllServices[n] = t
+	}
+	for n, t := range req.AST.InstalledServices {
+		req.AST.AllServices[n] = t
+	}
+
+	res := NewResponser()
+	res.debug = true
+	return req, res
 }
