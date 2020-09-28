@@ -1,7 +1,7 @@
 package parseargs
 
 import (
-	"github.com/ghodss/yaml"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
 	"os"
