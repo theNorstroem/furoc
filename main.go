@@ -36,7 +36,7 @@ func main() {
 
 	specDir := arglist.Inputs[0]
 	err, specYaml := input.GetInputYaml(specDir,
-		exec.Command("/Users/veith/Projects/golang/bin/spectools", "exportAsYaml", "-f"))
+		exec.Command("spectools", "exportAsYaml", "-f"))
 	if err != nil {
 		log.Fatal(err)
 	}
