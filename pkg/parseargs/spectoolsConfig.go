@@ -32,6 +32,7 @@ func FromSpecToolsConfig() Arglist {
 		a.Inputs = append(a.Inputs, "./")
 	}
 
+	// informative, to show which furoc bin was used
 	a.Binary = os.Args[0]
 
 	return a

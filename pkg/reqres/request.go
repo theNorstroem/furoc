@@ -41,6 +41,10 @@ func NewRequester() (*Request, *Response) {
 	req := &Request{}
 	req.Parameters = os.Args
 	req.ParameterMap = map[string]string{}
+
+	res := NewResponser()
+	res.debug = false
+
 	// make a param map for easy access
 	// you still have to parse it
 	for _, p := range req.Parameters[1:] {
@@ -67,6 +71,7 @@ func NewRequester() (*Request, *Response) {
 		if err != nil {
 			log.Fatal(debugFile, err)
 		}
+		res.debug = true
 	} else {
 		data, err = ioutil.ReadAll(os.Stdin)
 		// write debugfile
@@ -101,7 +106,5 @@ func NewRequester() (*Request, *Response) {
 		req.AST.AllServices[n] = t
 	}
 
-	res := NewResponser()
-	res.debug = true
 	return req, res
 }

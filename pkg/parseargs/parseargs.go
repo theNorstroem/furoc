@@ -10,16 +10,16 @@ import (
 )
 
 type Arglist struct {
-	Commands []Command
-	Inputs   []string // todo: at the moment single input is supported only, the other inputs will be ignored
-	Binary   string
+	Commands []Command `yaml:"Commands"`
+	Inputs   []string  `yaml:"Input"` // todo: at the moment single input is supported only, the other inputs will be ignored
+	Binary   string    `yaml:"Binary"`
 }
 
 type Command struct {
-	Args       []string
-	Plugin     string
-	PluginName string
-	OutputDir  string
+	Args       []string `yaml:"Args"`
+	Plugin     string   `yaml:"Plugin"`
+	PluginName string   `yaml:"PluginName"` // binary
+	OutputDir  string   `yaml:"OutputDir"`
 }
 
 func Parse() Arglist {
