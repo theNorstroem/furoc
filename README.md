@@ -28,10 +28,11 @@ Scollection-dropdown,\
 ```
 
 #### running with config:
-Same rules from "as command" are applied. Furoc will look for a `.furoc` file in the current directory.
+Same rules from "run as command" are applied. 
 
-```shell script
-# just run furoc in the directory of your spec project 
+Furoc will look for a `.furoc` file in the current directory.
+
+```shell script 
 furoc
 ```
 
