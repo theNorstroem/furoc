@@ -7,26 +7,23 @@ import (
 	"os"
 )
 
-func FromSpecToolsConfig() Arglist {
-	configB, err := ioutil.ReadFile(".spectools")
+func FromFurocConfig() Arglist {
+	configFile, err := ioutil.ReadFile(".furoc")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	type fc struct {
-		Furoc Arglist
-	}
-	type c struct {
-		Build fc
+		Furoc Arglist `yaml:"furoc"`
 	}
 
-	config := c{}
-	err = yaml.Unmarshal(configB, &config)
+	config := fc{}
+	err = yaml.Unmarshal(configFile, &config)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	a := config.Build.Furoc
+	a := config.Furoc
 
 	if len(a.Inputs) == 0 {
 		a.Inputs = append(a.Inputs, "./")

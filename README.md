@@ -28,27 +28,26 @@ Scollection-dropdown,\
 ```
 
 #### running with config:
-Same rules from "as command" are applied.
+Same rules from "as command" are applied. Furoc will look for a `.furoc` file in the current directory.
 
 ```shell script
 # just run furoc in the directory of your spec project 
 furoc
 ```
 
-**Example:**
+**Example .furoc file:**
 
 ```yaml
-build:
-  furoc:
-    Input:
-        - ./
-    Commands:
-      - OutputDir: dist/u33e
-        Plugin: furoc-gen-u33e
-        Args:
-            - Sreference-search
-            - Tform
-            - Scollection-dropdown
+furoc:
+  Input:
+      - ./
+  Commands:
+    - OutputDir: dist/u33e
+      Plugin: furoc-gen-u33e
+      Args:
+          - Sreference-search
+          - Tform
+          - Scollection-dropdown
 ```
 
 
@@ -70,7 +69,7 @@ Defines which plugins furoc should use.
 - `:outputdir` the generated files from the plugin will written to this directory
 
 ## Writing your own plugins
-It is not so dificult to write a plugin for furoc. Look at the sample `furoc-gen-sample` or look at other plugins.
+It is not so difficult to write a plugin for furoc. Look at the sample `furoc-gen-sample` or look at other plugins.
 
 ### Interface
 Furoc will pass a yaml with the current config of the spec project, the types, the services, the installed types and the installed services.
@@ -83,4 +82,4 @@ Furoc exects a list of files as response. The response goes to `stdout` of your 
 You can use the package **reqres** which handles all the stdin stdout encoding decoding stuff for you.  
 
 ### Furoc plugins in other languages
-At the moment, only serialized go structs are accepted as response. A variant which accepts proto (with the same interface protoc excepts the responses) will come if requested. 
+At the moment, only serialized go structs are accepted as response. A variant which accepts proto (with the same interface protoc excepts the responses) will come; if requested. 

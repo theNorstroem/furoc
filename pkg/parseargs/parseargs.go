@@ -11,7 +11,7 @@ import (
 
 type Arglist struct {
 	Commands []Command `yaml:"Commands"`
-	Inputs   []string  `yaml:"Input"` // todo: at the moment single input is supported only, the other inputs will be ignored
+	Inputs   []string  `yaml:"Inputs"` // todo: at the moment single input is supported only, the other inputs will be ignored
 	Binary   string    `yaml:"Binary"`
 }
 
