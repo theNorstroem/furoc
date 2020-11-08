@@ -19,7 +19,7 @@ func main() {
 		// look for a .furoc config in cwd
 		// if we are in a spec project and have furoc instructions there, follow them
 		if !util.FileExists(".furoc") {
-			log.Fatal("you must be in a spec project directory when no arguments are given")
+			log.Fatal("Config file .furoc not found. You must have a .furoc config when no arguments are given")
 		} else {
 			// read config
 			arglist = parseargs.FromFurocConfig()

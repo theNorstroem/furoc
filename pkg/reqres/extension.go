@@ -10,6 +10,10 @@ import (
 // returns true if ename was found and could be decoded without error
 // conversion of extension YAML into a Go value.
 func DecodeExtension(node *orderedmap.OrderedMap, ename string, v interface{}) bool {
+	// no extensions at all available
+	if node == nil {
+		return false
+	}
 	iValue, found := node.Get(ename)
 	if found {
 		fieldYamlNode := iValue.(*yaml.Node)
