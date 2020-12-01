@@ -35,8 +35,10 @@ func (Request) Fprintln(i ...interface{}) {
 
 // Does all the input handling, and marshalling for you
 //
-// To enable debuging add arguments the  "debug debugfile=./sample/fullyaml.yaml"
-// To create a debug file use "debugfileout=./sample/fullyaml.yaml"
+// To enable debuging add the arguments debug and debugfile to the call of this command, without furoc
+// "debug debugfile=./sample/fullyaml.yaml"
+//
+// To create a debug file use the argument "debugfileout=./sample/fullyaml.yaml" with furoc
 func NewRequester() (*Request, *Response) {
 	req := &Request{}
 	req.Parameters = os.Args

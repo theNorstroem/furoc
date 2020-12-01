@@ -9,21 +9,24 @@ import (
 func main() {
 
 	// receive the request, all the stdin and mapping stuff is done here
-	// if you need to debug your plugin, use following arguments:
+	// if you need to debug your plugin, start it using following arguments:
 	// debug debugfile=./sample/fullyaml.yaml
-	req := furoc.NewRequester()
+	// to create a debugfile
+	// To create a debug file use "debugfileout=./sample/fullyaml.yaml" as an argument
+	req, res := furoc.NewRequester()
 
 	// create a responser, which can be used to add files and send the response back to furoc
-	res := furoc.NewResponser()
 
 	// use req.Fprintln(interface{}) if you want to print something to the console (or write to stderr)
 	// you can not write to the console with fmt or log (because this goes to stdout)
 	req.Fprintln("Sample plugin started")
 
-	// for convinience
-	ast := req.AST
+	// the req object  contains
+	//	Parameters   []string  a list of the given input parameters
+	//	ParameterMap map[string]string the input parameters transformed to a map
+	//	AST          AST
 
-	for name, s := range ast.Services {
+	for name, s := range req.AST.Services {
 
 		// Using your own extension
 		// when you have the custom extension "sampleExtension" in the service spec
@@ -32,29 +35,29 @@ func main() {
 		//            sampleExtension:
 		//                generate: sample
 		// you can decode its content with furoc.DecodeExtension
-		specextension := &MyServiceSpecExtension{}
-		furoc.DecodeExtension(s.ServiceSpec.Extensions, "sampleExtension", specextension)
+		ext := &MyServiceSpecExtension{}
+		furoc.DecodeExtension(s.ServiceSpec.Extensions, "sampleExtension", ext)
 
-		if specextension.generate {
-			// do something
+		// do something if generate was set in the extension
+		if ext.generate {
+
+			// build your file
+			fileContent, err := yaml.Marshal(s.ServiceSpec)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// if your plugin needs to call another executable, you can use commandpipe.NewCommand()
+
+			// create sample file
+			readme := furoc.TargetFile{
+				Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md", // full qualified filename which will generated in :outputdir/
+				Content:  fileContent,                                   //[]byte with content
+			}
+
+			// Add file to the responder
+			res.AddFile(&readme)
 		}
-
-		// build your file
-		fileContent, err := yaml.Marshal(s.ServiceSpec)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// if your plugin needs to call another executable, you can use commandpipe.NewCommand()
-
-		// create sample file
-		readme := furoc.TargetFile{
-			Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md", // full qualified filename which will generated in :outputdir/
-			Content:  fileContent,                                   //[]byte with content
-		}
-
-		// Add file to the responder
-		res.AddFile(&readme)
 	}
 
 	// send the response back to furoc
