@@ -26,6 +26,7 @@ type Request struct {
 	Parameters   []string
 	ParameterMap map[string]string
 	AST          AST
+	debug        bool
 }
 
 // print what you want to the stderr console and not to the reqres
@@ -45,7 +46,7 @@ func NewRequester() (*Request, *Response) {
 	req.ParameterMap = map[string]string{}
 
 	res := NewResponser()
-	res.debug = false
+	req.debug = false
 
 	// make a param map for easy access
 	// you still have to parse it
@@ -73,7 +74,7 @@ func NewRequester() (*Request, *Response) {
 		if err != nil {
 			log.Fatal(debugFile, err)
 		}
-		res.debug = true
+		req.debug = true
 	} else {
 		data, err = ioutil.ReadAll(os.Stdin)
 		// write debugfile

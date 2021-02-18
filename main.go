@@ -59,8 +59,8 @@ func main() {
 			baseTargetDir: cmd.OutputDir,
 		})
 		// check for duplicate files
-		for _, f := range r.Files {
-			fname := cmd.OutputDir + "/" + f.Filename
+		for _, f := range r.File {
+			fname := cmd.OutputDir + "/" + *f.Name
 			_, alreadyRagistred := fullFilelist[fname]
 			if alreadyRagistred {
 				log.Fatal(fname, " try to write same file twice")
@@ -73,11 +73,11 @@ func main() {
 	// Writer:
 
 	for _, responseSet := range allResponses {
-		for _, file := range responseSet.response.Files {
+		for _, file := range responseSet.response.File {
 			if util.DirExists(responseSet.baseTargetDir) {
-				fname := path.Join(responseSet.baseTargetDir, file.Filename)
+				fname := path.Join(responseSet.baseTargetDir, *file.Name)
 				util.MkdirRelative(path.Dir(fname))
-				ioutil.WriteFile(fname, file.Content, 0644)
+				ioutil.WriteFile(fname, []byte(*file.Content), 0644)
 			} else {
 				log.Fatal("Dir does not exist: ", responseSet.baseTargetDir)
 			}

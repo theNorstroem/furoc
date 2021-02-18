@@ -3,52 +3,32 @@ package reqres
 // use this to make a reqres for furoc
 
 import (
-	"encoding/gob"
-	"github.com/theNorstroem/spectools/pkg/util"
-	"io/ioutil"
-	"log"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/pluginpb"
 	"os"
-	"path"
 )
 
-type TargetFile struct {
-	Filename string // full qualified name from out dir. You can start with /
-	Content  []byte // the file content
-}
-
-type Response struct {
-	Files []*TargetFile
-	debug bool
-}
+type Response pluginpb.CodeGeneratorResponse
 
 // Creates a responser which holds the files you want to send back to protoc.
 func NewResponser() *Response {
-	return &Response{Files: []*TargetFile{}}
+	return &Response{
+		File: []*pluginpb.CodeGeneratorResponse_File{},
+	}
 }
 
 // Add a file to the responser, duplicate filename checks are done in furoc.
-func (r *Response) AddFile(file *TargetFile) {
-	r.Files = append(r.Files, file)
+func (r *Response) AddFile(file *pluginpb.CodeGeneratorResponse_File) {
+	r.File = append(r.File, file)
 }
 
 // Send the encoded message response back to furoc
 func (r *Response) SendResponse() {
-	if r.debug {
-		// do the writes directly when debuging is enabled
-		for _, file := range r.Files {
-			if util.DirExists("debug_out") {
-				fname := path.Join("debug_out", file.Filename)
-				util.MkdirRelative(path.Dir(fname))
-				ioutil.WriteFile(fname, file.Content, 0644)
-			} else {
-				log.Fatal("Dir does not exist: ", "debug_out")
-			}
-
-		}
-	} else {
-
-		// encode and send the reqres
-		encoder := gob.NewEncoder(os.Stdout)
-		encoder.Encode(r)
+	// encode and send the reqres
+	res := pluginpb.CodeGeneratorResponse(*r)
+	marshalled, err := proto.Marshal(&res)
+	if err != nil {
+		panic(err)
 	}
+	os.Stdout.Write(marshalled)
 }
