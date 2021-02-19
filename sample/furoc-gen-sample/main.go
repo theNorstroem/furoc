@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/ghodss/yaml"
 	furoc "github.com/theNorstroem/furoc/pkg/reqres"
-	"google.golang.org/protobuf/types/pluginpb"
 	"log"
 )
 
@@ -40,7 +39,7 @@ func main() {
 		furoc.DecodeExtension(s.ServiceSpec.Extensions, "sampleExtension", ext)
 
 		// do something if generate was set in the extension
-		if ext.generate {
+		if ext.Generate {
 
 			// build your file
 			fileContent, err := yaml.Marshal(s.ServiceSpec)
@@ -49,13 +48,10 @@ func main() {
 			}
 
 			// if your plugin needs to call another executable, you can use commandpipe.NewCommand()
-
-			name := "/" + name + "/" + s.ServiceSpec.Name + ".md"
-			cntnt := string(fileContent)
 			// create sample file
-			readme := pluginpb.CodeGeneratorResponse_File{
-				Name:    &name, // full qualified filename which will generated in :outputdir/
-				Content: &cntnt,
+			readme := furoc.TargetFile{
+				Filename: "/" + name + "/" + s.ServiceSpec.Name + ".md", // full qualified filename which will generated in :outputdir/
+				Content:  fileContent,                                   //[]byte with content
 			}
 
 			// Add file to the responder
@@ -64,9 +60,9 @@ func main() {
 	}
 
 	// send the response back to furoc
-	res.SendResponse()
+	res.SendResponse(req.Debug)
 }
 
 type MyServiceSpecExtension struct {
-	generate bool `yaml:"generate"`
+	Generate bool `yaml:"generate"` //field must be public
 }

@@ -24,6 +24,7 @@ type Servicelist struct {
 }
 
 type ServiceAst struct {
+	SpecDir     string // the base path, like specDir or dependencies/x.y.com/specDir
 	Path        string // relative path of spec file to SpecDir
 	FileName    string
 	ServiceSpec specSpec.Service
@@ -65,6 +66,7 @@ func loadServiceSpecsFromDir(specDir string) (servicesMap map[string]*ServiceAst
 				relativePath := path.Dir(strings.Join(strings.Split(fpath, "/")[sdlen:], "/"))
 				AstService := &ServiceAst{
 					Path:        relativePath, // store Path without specDir
+					SpecDir:     specDir,
 					FileName:    filename,
 					ServiceSpec: readAndUnmarshalSpec(fpath),
 				}
@@ -175,7 +177,7 @@ func (ast ServiceAst) UpdateImports(typelist *typeAst.Typelist) {
 		rpc := iValue.(*specSpec.Rpc)
 		rpc.Query.Map(func(qkey interface{}, qvalue interface{}) {
 			qp := qvalue.(*specSpec.Queryparam)
-			if qp.Type != "string" {
+			if !typeAst.IsScalar(qp.Type) {
 				imp, found := typelist.ResolveProtoImportForType(qp.Type, ast.ServiceSpec.XProto.Package)
 				if found {
 					// just add the imports, duplicates will be removed later

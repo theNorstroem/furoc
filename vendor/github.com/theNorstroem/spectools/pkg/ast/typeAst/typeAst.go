@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -24,6 +25,7 @@ type Typelist struct {
 }
 
 type TypeAst struct {
+	SpecDir  string // the base path, like specDir or dependencies/x.y.com/specDir
 	Path     string // relative path of spec file to SpecDir
 	FileName string
 	TypeSpec specSpec.Type
@@ -85,8 +87,10 @@ func loadTypeSpecsFromDir(specDir string) (typesMap map[string]*TypeAst) {
 				}
 
 				relativePath := path.Dir(strings.Join(strings.Split(fpath, "/")[sdlen:], "/"))
+
 				AstType := &TypeAst{
 					Path:     relativePath, // store Path without specDir
+					SpecDir:  specDir,      // store Path without specDir
 					FileName: filename,
 					TypeSpec: readAndUnmarshalSpec(fpath),
 				}
@@ -173,6 +177,9 @@ func (l *Typelist) SaveAllTypeSpecsToDir(specDir string) {
 
 //
 func (l *Typelist) ResolveProtoImportForType(typeName string, pkg string) (imp string, typeFound bool) {
+	if strings.HasPrefix(typeName, "[] ") {
+		typeName = typeName[3:]
+	}
 
 	fqTypeName := l.ResolveFullQualifiedTypeName(typeName, pkg)
 	// remove leading dot
@@ -230,8 +237,22 @@ func (l *Typelist) UpdateImports() {
 			}
 
 		})
+		// remove duplicate imports and sort them alphabetical
+		imports = distinctStringArray(imports)
+		sort.Strings(imports)
 		v.TypeSpec.XProto.Imports = imports
 	}
+}
+func distinctStringArray(stringSlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+	for _, entry := range stringSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
 }
 
 // Deletes the spec from disk and removes the element from List

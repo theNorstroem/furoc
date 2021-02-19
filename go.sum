@@ -236,6 +236,8 @@ github.com/theNorstroem/spectools v1.9.4 h1:BOlJ5Wj1f9sYM0oFRW6st9HoXXo4r2pmk4Fx
 github.com/theNorstroem/spectools v1.9.4/go.mod h1:gVsH5uhtNlwKsylKEzyFaTV48ycRX4HUZI7aE54MLpQ=
 github.com/theNorstroem/spectools v1.10.0 h1:04+sHLNJitD7+enFNgRxvwWFrwWOuvkBea+PgL+vyqA=
 github.com/theNorstroem/spectools v1.10.0/go.mod h1:gVsH5uhtNlwKsylKEzyFaTV48ycRX4HUZI7aE54MLpQ=
+github.com/theNorstroem/spectools v1.23.0 h1:Ja7iTtU44tH7eUNnwsmSDBVyxjdP6o5o0XEI6q70KAU=
+github.com/theNorstroem/spectools v1.23.0/go.mod h1:D395gvPKTiaADKip1NDHVll2I8qN6JXu5VzZe5ovE+M=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
 github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGrc=
 github.com/xanzy/ssh-agent v0.2.1/go.mod h1:mLlQY/MoOhWBj+gOGMQkOeiEvkx+8pJSI+0Bx9h2kr4=

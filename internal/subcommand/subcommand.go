@@ -3,14 +3,14 @@ package subcommand
 import (
 	"bufio"
 	"bytes"
-	"encoding/gob"
-	"github.com/theNorstroem/furoc/pkg/reqres"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/pluginpb"
 	"log"
 	"os"
 	"os/exec"
 )
 
-func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *reqres.Response, err error) {
+func ExecuteSubcommand(command string, specYaml []byte, params []string) (files *pluginpb.CodeGeneratorResponse, err error) {
 	if command == "" {
 		log.Fatal("plugin not defined")
 	}
@@ -25,8 +25,6 @@ func ExecuteSubcommand(command string, specYaml []byte, params []string) (files 
 	subProcess.Stdout = &b
 	subProcess.Stderr = os.Stderr
 
-	gobDecoder := gob.NewDecoder(&b)
-
 	if err = subProcess.Start(); err != nil { //Use start, not run
 		log.Fatal(command, err)
 	}
@@ -36,11 +34,13 @@ func ExecuteSubcommand(command string, specYaml []byte, params []string) (files 
 	stdin.Close()
 	subProcess.Wait()
 
-	var r = reqres.Response{}
-	err = gobDecoder.Decode(&r)
+	inp := b.Bytes()
+
+	r := &pluginpb.CodeGeneratorResponse{}
+	err = proto.Unmarshal(inp, r)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return &r, nil
+	return r, nil
 }

@@ -42,7 +42,7 @@ type Service struct {
 
 	// RPCs for the service ==> will contains *Rpc
 	Services   *orderedmap.OrderedMap `protobuf:"bytes,6,rep,name=services,proto3" json:"services" yaml:"services" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Extensions *orderedmap.OrderedMap `yaml:"extensions"`
+	Extensions *orderedmap.OrderedMap `json:"extensions,omitempty"  yaml:"extensions,omitempty"`
 }
 
 func (x *Service) Reset() {
@@ -384,9 +384,9 @@ type Fieldproto struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The field numbers are used to identify your fields in the message binary format, and should not be changed once your message type is in use.
-	Number int32 `protobuf:"varint,2,opt,name=number,proto3" json:"number"`
+	Number int32 `protobuf:"varint,2,opt,name=number,proto3" json:"number" yaml:"number"`
 	// Assign field to a protobuf oneof group.
-	Oneof string `protobuf:"bytes,3,opt,name=oneof,proto3" json:"oneof"`
+	Oneof string `protobuf:"bytes,3,opt,name=oneof,proto3" json:"oneof,omitempty"   yaml:"oneof,omitempty"`
 }
 
 func (x *Fieldproto) Reset() {
@@ -604,6 +604,9 @@ type Field struct {
 
 	// constraints for a field, like min{}, max{}, step{}
 	Constraints map[string]*furo.FieldConstraint `protobuf:"bytes,4,rep,name=constraints,proto3" json:"constraints" json:"yaml" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+
+	//
+	Extensions *orderedmap.OrderedMap `json:"extensions,omitempty"  yaml:"extensions,omitempty"`
 }
 
 func (x *Field) Reset() {
@@ -840,7 +843,8 @@ type Rpc struct {
 	// was a map[string]*Queryparam
 	Query *orderedmap.OrderedMap `protobuf:"bytes,4,rep,name=query,proto3" json:"query,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// RPC name https://developers.google.com/protocol-buffers/docs/proto3#services
-	RpcName string `protobuf:"bytes,2,opt,name=rpc_name,json=rpcName,proto3" json:"rpc_name,omitempty"`
+	RpcName    string                 `protobuf:"bytes,2,opt,name=rpc_name,json=rpcName,proto3" json:"rpc_name,omitempty"  yaml:"rpc_name,omitempty"`
+	Extensions *orderedmap.OrderedMap `json:"extensions,omitempty"  yaml:"extensions,omitempty"`
 }
 
 func (x *Rpc) Reset() {
@@ -921,10 +925,10 @@ type Type struct {
 	// information for the proto generator, should be removed for the client spec
 	XProto *Typeproto `protobuf:"bytes,4,opt,name=__proto,json=Proto,proto3" json:"__proto" yaml:"__proto"`
 
-	// fields of a type
+	// fields of a type (type is Field)
 	Fields *orderedmap.OrderedMap `protobuf:"bytes,5,rep,name=fields,proto3" json:"fields,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 
-	Extensions *orderedmap.OrderedMap `yaml:"extensions"`
+	Extensions *orderedmap.OrderedMap `json:"extensions,omitempty"  yaml:"extensions,omitempty"`
 
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

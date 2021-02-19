@@ -4,8 +4,8 @@ import (
 	"github.com/theNorstroem/furoc/internal/input"
 	"github.com/theNorstroem/furoc/internal/subcommand"
 	"github.com/theNorstroem/furoc/pkg/parseargs"
-	"github.com/theNorstroem/furoc/pkg/reqres"
 	"github.com/theNorstroem/spectools/pkg/util"
+	"google.golang.org/protobuf/types/pluginpb"
 	"io/ioutil"
 	"log"
 	"os"
@@ -42,7 +42,7 @@ func main() {
 	}
 
 	type CMDResponse struct {
-		response      *reqres.Response
+		response      *pluginpb.CodeGeneratorResponse
 		baseTargetDir string
 	}
 	allResponses := []CMDResponse{}
