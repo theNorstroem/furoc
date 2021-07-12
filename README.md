@@ -1,5 +1,7 @@
 # furoc
 
+> MOVED TO https://github.com/eclipse/eclipsefuro
+
 The `furoc` "compiler" is a generator tool similar to `protoc`.
 
 ### When furoc and when protoc?
